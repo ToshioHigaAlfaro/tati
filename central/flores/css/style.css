@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', cursive;
+}
+
+/* Evita desplazamiento y fija la pantalla al alto del celular */
+html, body, .container {
+    width: 100% !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    background-color: #000;
+}
+
+.night, .flowers {
+    pointer-events: none;
+}
+
+/* 1. Mensaje superior */
+.titulo {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #ffe600;
+    text-shadow: 0 0 10px rgba(255, 230, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.9);
+    z-index: 25;
+    pointer-events: none;
+}
+
+/* 2. Letras dinámicas sincronizadas */
+#lyrics {
+    position: absolute;
+    top: 32%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    max-width: 400px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 1);
+    z-index: 30;
+    pointer-events: none;
+}
+
+/* 3. Flores ligeramente mas abajo */
+.flowers {
+    position: absolute;
+    bottom: 95px !important; /* Bajadas un poco para asentarlas mejor en la vista */
+    left: 50%;
+    transform: translateX(-50%) scale(0.85);
+    transform-origin: bottom center;
+    z-index: 10;
+}
+
+/* 4. Botones flotantes mantenidos en su posición perfecta */
+.botones {
+    position: fixed !important;
+    bottom: 75px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 85%;
+    max-width: 300px;
+    z-index: 999999 !important;
+    pointer-events: auto;
+}
+
+.botones a {
+    flex: 1;
+    text-align: center;
+    background-color: #0a2be9;
+    padding: 12px 18px;
+    border-radius: 25px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.botones a:active,
+.botones a:hover {
+    background-color: #00c3ff;
+    transform: scale(1.04);
+}
+
+/* Regla especial para pantallas de alto estándar/largo */
+@media screen and (min-height: 750px) {
+    .flowers {
+        transform: translateX(-50%) scale(0.92);
+        bottom: 105px !important; /* Ajuste suave para pantallas más altas */
+    }
+    .botones {
+        bottom: 85px !important;
+    }
+}
+
+/* Ajustes para pantallas más pequeñas */
+@media screen and (max-height: 680px) {
+    .titulo {
+        top: 15px;
+        font-size: 0.9rem;
+    }
+    .flowers {
+        transform: translateX(-50%) scale(0.72);
+        bottom: 70px !important;
+    }
+    .botones {
+        bottom: 50px !important;
+    }
+}
