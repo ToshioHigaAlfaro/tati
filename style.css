@@ -1,0 +1,284 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #03070f;
+  color: #fff;
+}
+
+/* --- COPOS BLANCOS FLOTANTES (PARTÍCULAS) --- */
+.particulas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.particula {
+  position: absolute;
+  background: #ffffff; /* Copos blancos puros */
+  border-radius: 50%;
+  opacity: 0.2;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation: flotarParticula linear infinite;
+}
+
+@keyframes flotarParticula {
+  0% { transform: translateY(105vh) scale(0.4); opacity: 0; }
+  50% { opacity: 0.7; }
+  100% { transform: translateY(-10vh) scale(1.1); opacity: 0; }
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  z-index: 10;
+  padding: 10px;
+}
+
+/* --- DISEÑO DE LÁMPARA ESTÉTICA (POSICIÓN IDEAL MÓVIL) --- */
+.lamp-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px; /* Espacio perfecto entre la luz y el login */
+  user-select: none;
+  transition: all 0.4s ease;
+}
+
+.lamp-glow-bg {
+  position: absolute;
+  top: -12px;
+  width: 170px;
+  height: 170px;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.4) 0%, rgba(0, 150, 255, 0.08) 60%, transparent 75%);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.lamp-wire-top {
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.2), #00d2ff);
+  z-index: 2;
+}
+
+.lamp-shade {
+  width: 135px;
+  height: 75px;
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  border-radius: 70px 70px 16px 16px;
+  position: relative;
+  box-shadow: 0 0 25px rgba(0, 210, 255, 0.6), inset 0 4px 12px rgba(255, 255, 255, 0.4);
+  transition: all 0.5s ease;
+  z-index: 3;
+  border-top: 2px solid rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+}
+
+.lamp-face {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.eye {
+  width: 6px;
+  height: 6px;
+  background: #03070f;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0,0,0,0.5);
+  transition: all 0.4s ease;
+}
+
+.mouth {
+  width: 15px;
+  height: 8px;
+  border-bottom: 3px solid #03070f;
+  border-radius: 0 0 12px 12px;
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.4s ease;
+}
+
+/* HAZ DE LUZ BIEN UBICADO (EMPIEZA LIMPIO SOBRE LA TARJETA) */
+.light-beam {
+  position: absolute;
+  top: 95px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 130px;
+  background: linear-gradient(to bottom, rgba(0, 210, 255, 0.3), rgba(0, 150, 255, 0.02) 80%, transparent);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+}
+
+.lamp-base {
+  width: 44px;
+  height: 10px;
+  background: #00d2ff;
+  border-radius: 5px;
+  margin-top: 0px;
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.7);
+  transition: all 0.5s ease;
+  z-index: 1;
+}
+
+/* --- PITITA AL RAS EXACTO DE LA BASE --- */
+.lamp-cord-container {
+  position: absolute;
+  top: 95px;
+  left: 50%;
+  width: 90px;
+  height: 85px;
+  transform: translateX(-50%);
+  z-index: 5;
+  touch-action: none;
+  cursor: grab;
+}
+.lamp-cord-container:active {
+  cursor: grabbing;
+}
+
+.cord-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.cord-handle {
+  position: absolute;
+  left: 50px;
+  top: 22px;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00d2ff, 0 0 18px #00d2ff, inset 0 2px 3px rgba(0,0,0,0.2);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+  transform: translate(-50%, -50%);
+}
+
+/* --- ESTADO APAGADO --- */
+.lamp-container.off .lamp-glow-bg { opacity: 0; }
+.lamp-container.off .lamp-wire-top { background: rgba(255,255,255,0.1); }
+.lamp-container.off .lamp-shade { 
+  background: linear-gradient(135deg, #2c3e50, #1a252f); 
+  box-shadow: inset 0 2px 5px rgba(255,255,255,0.05);
+  border-top-color: rgba(255,255,255,0.15);
+}
+.lamp-container.off .eye, 
+.lamp-container.off .mouth { background: #7f8c8d; border-color: #7f8c8d; box-shadow: none; }
+.lamp-container.off .light-beam { opacity: 0; }
+.lamp-container.off .lamp-base { background: #1a252f; box-shadow: none; }
+.lamp-container.off .cord-handle { background: #7f8c8d; box-shadow: none; }
+.lamp-container.off #cordLine { stroke: #7f8c8d; }
+
+/* --- TARJETA DE LOGIN --- */
+.login-card {
+  background: rgba(10, 20, 35, 0.85);
+  border: 2px solid rgba(0, 210, 255, 0.35);
+  border-radius: 16px;
+  padding: 22px 18px;
+  width: 90vw;
+  max-width: 330px;
+  box-shadow: 0 0 35px rgba(0, 210, 255, 0.25);
+  backdrop-filter: blur(12px);
+  transition: all 0.4s ease;
+}
+
+.login-title {
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  color: #00d2ff;
+  font-size: 11px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px 13px;
+  background: rgba(5, 11, 20, 0.8);
+  border: 1px solid rgba(0, 210, 255, 0.4);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #00d2ff;
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.5);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #0099ff, #00d2ff);
+  border: none;
+  border-radius: 8px;
+  color: #050b14;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.5);
+  transition: all 0.2s;
+}
+
+.login-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(0, 210, 255, 0.8);
+}
+
+.login-card.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+  filter: grayscale(60%);
+}

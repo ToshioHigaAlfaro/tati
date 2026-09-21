@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Nuestro Rincón Mágico</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Partículas / Copos de nieve flotantes -->
+  <div class="particulas" id="particulasContainer"></div>
+
+  <!-- Audio con la ruta correcta -->
+  <audio id="loginAudio" src="central/flores/sound/musiclogin.mp3" preload="auto" loop autoplay></audio>
+
+  <div class="main-container">
+    <!-- LÁMPARA ESTÉTICA MEJORADA (INICIA APAGADA) -->
+    <div class="lamp-container off" id="lampContainer">
+      <div class="lamp-glow-bg"></div>
+      
+      <!-- Soporte superior y cable de la lámpara -->
+      <div class="lamp-wire-top"></div>
+      
+      <!-- Pantalla principal de la lámpara -->
+      <div class="lamp-shade">
+        <div class="lamp-face">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="mouth"></div>
+        </div>
+      </div>
+      
+      <div class="light-beam"></div>
+      
+      <!-- Contenedor de la pitita interactiva al ras de la base -->
+      <div class="lamp-cord-container" id="cordContainer" title="¡Jala la pitita para encender!">
+        <svg class="cord-svg" id="cordSvg">
+          <line id="cordLine" x1="50" y1="0" x2="50" y2="22" stroke="#00d2ff" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div class="cord-handle" id="cordHandle"></div>
+      </div>
+
+      <div class="lamp-base"></div>
+    </div>
+
+    <!-- TARJETA DE LOGIN (INICIA DESHABILITADA) -->
+    <div class="login-card disabled" id="loginCard">
+      <form class="login-form" id="loginForm">
+        <h2 class="login-title">BIENVENIDOS A NUESTRO RINCON ♥</h2>
+        
+        <div class="form-group">
+          <label for="username">♥ TU USUARIO ♥</label>
+          <input type="text" id="username" placeholder="Ingresa tu usuario" required disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="password">♥ TU CONTRASEÑA ♥</label>
+          <input type="password" id="password" placeholder="Ingresa tu contraseña" required disabled>
+        </div>
+
+        <button type="submit" class="login-btn" disabled>INICIAR</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
