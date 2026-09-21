@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Un Rincón Especial ♥</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden; /* Evita cualquier tipo de desplazamiento o scroll */
+      position: fixed; /* Mantiene la pantalla estática al deslizar el dedo */
+    }
+
+    body {
+      background: linear-gradient(rgba(5, 7, 15, 0.7), rgba(5, 7, 15, 0.85)), 
+                  url('flores/img/fondo.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* CONTENEDOR DE CORAZONES FLOTANTES (SOLO ROJOS) */
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      top: -10%;
+      color: #ff334b;
+      font-size: var(--heart-size);
+      animation: heartFall var(--fall-duration) linear infinite;
+      animation-delay: var(--fall-delay);
+      opacity: 0.7;
+      filter: drop-shadow(0 0 8px rgba(255, 51, 75, 0.8));
+    }
+
+    @keyframes heartFall {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(105vh) translateX(var(--move-x)) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* CONTENIDO PRINCIPAL CENTRADO Y ESTÁTICO */
+    .main-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 420px;
+      height: 100%;
+    }
+
+    /* TÍTULO MEJORADO CON LUCES NEÓN */
+    .greetings {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .greetings span {
+      animation: neonGlow 2.5s ease-in-out infinite alternate;
+      color: #fff;
+    }
+
+    .greetings span:nth-child(odd) { animation-delay: 0.2s; }
+    .greetings span:nth-child(even) { animation-delay: 0.7s; }
+
+    @keyframes neonGlow {
+      0% {
+        color: #ff88a2;
+        text-shadow: 0 0 5px rgba(255, 51, 75, 0.4);
+      }
+      100% {
+        color: #ffffff;
+        text-shadow: 0 0 12px #ff334b, 0 0 25px #ff334b, 0 0 35px #cc0029;
+      }
+    }
+
+    /* SUBTÍTULO Y FRASE */
+    .description {
+      font-size: 0.85rem;
+      letter-spacing: 1.2px;
+      color: #ffd6df;
+      margin-bottom: 12px;
+      text-shadow: 0 0 10px rgba(255, 51, 75, 0.6);
+      font-weight: 400;
+    }
+
+    /* CONTENEDOR DEL TIMER */
+    .timer-box {
+      background: rgba(20, 10, 15, 0.75);
+      border: 1px solid rgba(255, 51, 75, 0.4);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 12px;
+      width: 100%;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 51, 75, 0.15);
+    }
+
+    .timer-title {
+      font-size: 0.65rem;
+      color: #ff88a2;
+      margin-bottom: 5px;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+
+    .time-digits {
+      display: flex;
+      justify-content: space-around;
+      gap: 3px;
+    }
+
+    .time-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 38px;
+    }
+
+    .digit {
+      font-family: monospace;
+      font-size: 1.1rem;
+      font-weight: bold;
+      background: linear-gradient(to bottom, #ffffff, #ff334b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 8px rgba(255, 51, 75, 0.6);
+    }
+
+    .label {
+      font-size: 0.5rem;
+      color: #aaa;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    /* CONTENEDOR DE TARJETAS EN 2 COLUMNAS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    .card {
+      background: rgba(20, 10, 15, 0.7);
+      border: 1px solid rgba(255, 51, 75, 0.35);
+      border-radius: 12px;
+      padding: 10px 8px;
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      backdrop-filter: blur(6px);
+      text-align: center;
+      min-height: 85px;
+    }
+
+    .card:active {
+      transform: scale(0.95);
+      border-color: #ff334b;
+      background: rgba(255, 51, 75, 0.25);
+      box-shadow: 0 0 18px rgba(255, 51, 75, 0.6);
+    }
+
+    .card h3 {
+      font-size: 0.8rem;
+      color: #ff667d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      line-height: 1.2;
+    }
+
+    .card.flores h3 {
+      color: #ffcc00;
+      text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+    }
+
+    .card p {
+      font-size: 0.6rem;
+      color: #ccc;
+      line-height: 1.1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MÚSICA DE FONDO -->
+  <audio id="backgroundAudio" src="flores/sound/amor.mp3" loop autoplay></audio>
+
+  <!-- FONDO ANIMADO DE CORAZONES (SOLO ROJOS) -->
+  <div class="hearts-container" id="heartsContainer"></div>
+
+  <div class="main-content">
+    <!-- SALUDO -->
+    <div class="greetings">
+      <span>B</span>
+      <span>I</span>
+      <span>E</span>
+      <span>N</span>
+      <span>V</span>
+      <span>E</span>
+      <span>N</span>
+      <span>I</span>
+      <span>D</span>
+      <span>A</span>
+    </div>
+
+    <!-- FRASE -->
+    <div class="description">
+      <span>Un rincón especial diseñado solo para ti ♥</span>
+    </div>
+
+    <!-- CONTENEDOR DEL TIMER -->
+    <div class="timer-box">
+      <div class="timer-title">JUNTOS DESDE EL 30 DE OCTUBRE</div>
+      <div class="time-digits">
+        <div class="time-block"><span class="digit" id="years">00</span><span class="label">AÑOS</span></div>
+        <div class="time-block"><span class="digit" id="months">00</span><span class="label">MESES</span></div>
+        <div class="time-block"><span class="digit" id="days">00</span><span class="label">DÍAS</span></div>
+        <div class="time-block"><span class="digit" id="hours">00</span><span class="label">HRS</span></div>
+        <div class="time-block"><span class="digit" id="minutes">00</span><span class="label">MIN</span></div>
+        <div class="time-block"><span class="digit" id="seconds">00</span><span class="label">SEG</span></div>
+      </div>
+    </div>
+
+    <!-- MENÚ DE TARJETAS (2 COLUMNAS) -->
+    <div class="cards-grid">
+      <a href="flores/index.html" class="card flores">
+        <h3><span>🌻</span> FLORES AMARILLAS</h3>
+        <p>Para 30/10 sorpresa espacial</p>
+      </a>
+
+      <a href="universo.html" class="card">
+        <h3><span>🪐</span> NUESTRO UNIVERSO</h3>
+        <p>Nuestra historia y momentos</p>
+      </a>
+
+      <a href="galeria.html" class="card">
+        <h3><span>📸</span> VIDEOS Y FOTOS</h3>
+        <p>Recuerdos capturados</p>
+      </a>
+
+      <a href="cartas.html" class="card">
+        <h3><span>💌</span> CARTAS</h3>
+        <p>Palabras de mi corazón</p>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // --- Solución para reproducción automática de audio en celulares ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('backgroundAudio');
+      audio.volume = 0.6;
+      
+      audio.play().catch(() => {
+        const unlockAudio = () => {
+          audio.play();
+          document.removeEventListener('click', unlockAudio);
+          document.removeEventListener('touchstart', unlockAudio);
+        };
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('touchstart', unlockAudio);
+      });
+    });
+
+    // --- Generador Dinámico de Corazones (Solo Rojos) ---
+    const container = document.getElementById('heartsContainer');
+    const heartCount = 18;
+
+    for (let i = 0; i < heartCount; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = '♥';
+      
+      const size = Math.random() * 14 + 10;
+      const left = Math.random() * 100;
+      const duration = Math.random() * 6 + 5;
+      const delay = Math.random() * 5;
+      const moveX = (Math.random() - 0.5) * 60 + 'px';
+
+      heart.style.setProperty('--heart-size', size + 'px');
+      heart.style.setProperty('--fall-duration', duration + 's');
+      heart.style.setProperty('--fall-delay', delay + 's');
+      heart.style.setProperty('--move-x', moveX);
+      heart.style.left = left + '%';
+
+      container.appendChild(heart);
+    }
+
+    // --- Lógica del Timer (Ajustado a 7 años restando 1 año a la fecha base: 10 de Agosto de 2019) ---
+    const startDate = new Date(2025, 10, 30, 0, 0, 0); 
+
+    function updateTimer() {
+      const now = new Date();
+      
+      let years = now.getFullYear() - startDate.getFullYear();
+      let months = now.getMonth() - startDate.getMonth();
+      let days = now.getDate() - startDate.getDate();
+      let hours = now.getHours() - startDate.getHours();
+      let minutes = now.getMinutes() - startDate.getMinutes();
+      let seconds = now.getSeconds() - startDate.getSeconds();
+
+      if (seconds < 0) {
+        seconds += 60;
+        minutes--;
+      }
+      if (minutes < 0) {
+        minutes += 60;
+        hours--;
+      }
+      if (hours < 0) {
+        hours += 24;
+        days--;
+      }
+      if (days < 0) {
+        const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += previousMonth.getDate();
+        months--;
+      }
+      if (months < 0) {
+        months += 12;
+        years--;
+      }
+
+      document.getElementById('years').textContent = String(years).padStart(2, '0');
+      document.getElementById('months').textContent = String(months).padStart(2, '0');
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
+</body>
+</html>

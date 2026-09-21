@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Videos y Fotos ♥</title>
+<style>
+  /* ===================================================================
+     VIDEOS Y FOTOS
+     Para agregar tus recuerdos, baja hasta "TUS RECUERDOS"
+     =================================================================== */
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    background:
+      linear-gradient(rgba(5,7,15,.86), rgba(5,7,15,.95)),
+      url('flores/img/fondo.jpg') no-repeat center center fixed;
+    background-size:cover;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    color:#fff;min-height:100vh;
+    padding:calc(env(safe-area-inset-top,0px) + 18px) 16px
+            calc(env(safe-area-inset-bottom,0px) + 40px);
+    overflow-x:hidden;
+  }
+
+  .wrap{max-width:900px;margin:0 auto}
+
+  .volver{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:.72rem;letter-spacing:1px;color:#ff88a2;
+    text-decoration:none;padding:7px 13px;margin-bottom:24px;
+    border:1px solid rgba(255,51,75,.35);border-radius:20px;
+    background:rgba(20,10,15,.6);backdrop-filter:blur(6px);
+  }
+  .volver:active{background:rgba(255,51,75,.25)}
+
+  header{margin-bottom:24px}
+  header h1{
+    font-size:1.7rem;font-weight:900;letter-spacing:2.5px;line-height:1.15;
+    text-shadow:0 0 14px #ff334b, 0 0 30px rgba(255,51,75,.55);
+  }
+  header p{margin-top:9px;font-size:.82rem;color:#ffd6df;line-height:1.55}
+
+  /* --- REJILLA --- */
+  .rejilla{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  }
+  .recuerdo{
+    border:none;padding:0;cursor:pointer;font-family:inherit;
+    background:rgba(20,10,15,.7);
+    border:1px solid rgba(255,51,75,.3);
+    border-radius:14px;overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,.5);
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .recuerdo:active{transform:scale(.96);border-color:#ff334b}
+  .recuerdo:focus-visible{outline:2px solid #ff88a2;outline-offset:3px}
+
+  .miniatura{
+    width:100%;aspect-ratio:1/1;object-fit:cover;display:block;
+    background:#1a0d13;
+  }
+  .marca{
+    position:relative;
+  }
+  .marca .play{
+    position:absolute;inset:0;display:grid;place-items:center;
+    font-size:1.8rem;color:#fff;
+    background:linear-gradient(transparent 40%, rgba(0,0,0,.55));
+    text-shadow:0 0 14px rgba(0,0,0,.8);
+  }
+  .pie{
+    display:block;padding:9px 10px 11px;
+    font-size:.7rem;color:#d8cdd2;text-align:left;line-height:1.35;
+  }
+
+  /* --- SIN RECUERDOS TODAVÍA --- */
+  .vacio{
+    border:1px dashed rgba(255,51,75,.38);border-radius:16px;
+    padding:28px 22px;text-align:center;
+    background:rgba(20,10,15,.55);backdrop-filter:blur(6px);
+  }
+  .vacio .icono{font-size:2rem;display:block;margin-bottom:12px}
+  .vacio h2{font-size:1rem;margin-bottom:10px;color:#ff88a2}
+  .vacio p{font-size:.8rem;line-height:1.7;color:#c9bcc2}
+  .vacio code{
+    background:rgba(255,51,75,.14);padding:2px 6px;border-radius:5px;
+    font-size:.74rem;color:#ffbcc8;
+  }
+
+  /* --- VISOR --- */
+  .visor{
+    position:fixed;inset:0;z-index:50;display:none;
+    background:rgba(3,3,7,.95);
+    align-items:center;justify-content:center;flex-direction:column;
+    padding:calc(env(safe-area-inset-top,0px) + 14px) 14px
+            calc(env(safe-area-inset-bottom,0px) + 14px);
+  }
+  .visor.visible{display:flex}
+  .visor img, .visor video{
+    max-width:100%;max-height:72vh;border-radius:10px;
+    box-shadow:0 20px 50px rgba(0,0,0,.8);
+  }
+  .visor .titulo{
+    margin-top:16px;font-size:.85rem;color:#ffd6df;text-align:center;
+    max-width:420px;line-height:1.5;
+  }
+  .controles{display:flex;gap:10px;margin-top:18px}
+  .controles button{
+    background:rgba(255,51,75,.16);border:1px solid rgba(255,51,75,.45);
+    color:#fff;border-radius:22px;padding:10px 20px;
+    font-family:inherit;font-size:.78rem;cursor:pointer;
+  }
+  .controles button:active{background:rgba(255,51,75,.34)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<audio id="musica" src="flores/sound/music3.mp3" loop></audio>
+
+<div class="wrap">
+  <a href="rincon.html" class="volver">← Volver al rincón</a>
+
+  <header>
+    <h1>VIDEOS Y FOTOS</h1>
+    <p>Todos los momentos que ya no se nos van a olvidar.</p>
+  </header>
+
+  <div id="contenido"></div>
+</div>
+
+<!-- Visor -->
+<div class="visor" id="visor">
+  <div id="visorMedio"></div>
+  <p class="titulo" id="visorTitulo"></p>
+  <div class="controles">
+    <button id="anterior">← Anterior</button>
+    <button id="cerrarVisor">Cerrar</button>
+    <button id="siguiente">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+/* ===================================================================
+   TUS RECUERDOS
+
+   1. Crea una carpeta llamada  recuerdos  dentro de la carpeta central
+   2. Mete ahí tus fotos (.jpg .png) y videos (.mp4)
+   3. Agrega cada uno a esta lista
+
+   tipo: "foto" o "video"
+   src:  la ruta del archivo
+   titulo: lo que quieras que se lea debajo
+   portada: (solo para videos) una imagen que se vea antes de reproducir
+   =================================================================== */
+const recuerdos = [
+  { tipo: "foto",  src: "recuerdos/puchicagando.jpg", titulo: "Nuestro primer hijito haciendo popo JAJAJ" },
+  { tipo: "foto",  src: "recuerdos/zariwella.jpg",     titulo: "éramos unos fenómenos jsdjsj" },
+  { tipo: "foto",  src: "recuerdos/huevo.jpg",     titulo: "tu webo quemado" },
+  { tipo: "foto",  src: "recuerdos/mine.jpg",     titulo: "aqui te quedaste dormida jajsja" },
+  { tipo: "foto",  src: "recuerdos/baño.jpg",     titulo: "borrachita :3" },
+  { tipo: "foto",  src: "recuerdos/compar.jpg",     titulo: "me gustó muchisimo este edit<3" },
+  { tipo: "foto",  src: "recuerdos/cuchi.jpg",     titulo: "CACHIIIIIIIIII" },
+  { tipo: "foto",  src: "recuerdos/nojao.jpg",     titulo: "FUDIOSOOOO" },
+  { tipo: "foto",  src: "recuerdos/wwm.jpg",     titulo: "La wapa y el más wapo" },
+  { tipo: "foto",  src: "recuerdos/pesuña.jpg",     titulo: "pesuña de tati xd" },
+  { tipo: "foto",  src: "recuerdos/roblo.jpg",     titulo: "con cariño :3" },
+  { tipo: "foto",  src: "recuerdos/dark.jpg",     titulo: "somos emorroides" },
+  { tipo: "foto",  src: "recuerdos/poke.jpg",     titulo: "nuestas pokeaventuras!!!" },
+  
+ { tipo: "video", src: "recuerdos/yoese.mp4",     titulo: "Para que me recuerdes siempre", portada: "recuerdos/yoesee.jpg" },
+{ tipo: "video", src: "recuerdos/beshito.mp4",     titulo: "pokenomeeaenviadoun WaZA", portada: "recuerdos/images.jpg" },
+ { tipo: "video", src: "recuerdos/notenojes.mp4",     titulo: "yo cuando te molestas conmigo :c", portada: "recuerdos/emo.jpg" },
+];
+
+const contenido = document.getElementById('contenido');
+
+if (recuerdos.length === 0) {
+  contenido.innerHTML = `
+    <div class="vacio">
+      <span class="icono">📸</span>
+      <h2>Todavía no hay nada aquí</h2>
+      <p>
+        Crea una carpeta <code>recuerdos</code> dentro de <code>central</code>,
+        mete ahí tus fotos y videos, y añádelos a la lista que está al inicio
+        del código de esta página.
+      </p>
+    </div>`;
+} else {
+  contenido.innerHTML = `<div class="rejilla">${
+    recuerdos.map((r, i) => `
+      <button class="recuerdo" data-i="${i}">
+        <div class="marca">
+          <img class="miniatura" src="${r.tipo === 'video' ? (r.portada || '') : r.src}" alt="${r.titulo}">
+          ${r.tipo === 'video' ? '<span class="play">▶</span>' : ''}
+        </div>
+        <span class="pie">${r.titulo}</span>
+      </button>`).join('')
+  }</div>`;
+}
+
+/* --- Visor --- */
+const visor = document.getElementById('visor');
+const visorMedio = document.getElementById('visorMedio');
+const visorTitulo = document.getElementById('visorTitulo');
+let actual = 0;
+
+contenido.addEventListener('click', e => {
+  const boton = e.target.closest('.recuerdo');
+  if (!boton) return;
+  actual = Number(boton.dataset.i);
+  mostrar();
+  visor.classList.add('visible');
+  document.body.style.overflow = 'hidden';
+});
+
+function mostrar(){
+  const r = recuerdos[actual];
+  visorMedio.innerHTML = r.tipo === 'video'
+    ? `<video src="${r.src}" controls autoplay playsinline></video>`
+    : `<img src="${r.src}" alt="${r.titulo}">`;
+  visorTitulo.textContent = r.titulo;
+}
+
+function cerrar(){
+  visor.classList.remove('visible');
+  visorMedio.innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('cerrarVisor').addEventListener('click', cerrar);
+document.getElementById('anterior').addEventListener('click', () => {
+  actual = (actual - 1 + recuerdos.length) % recuerdos.length; mostrar();
+});
+document.getElementById('siguiente').addEventListener('click', () => {
+  actual = (actual + 1) % recuerdos.length; mostrar();
+});
+document.addEventListener('keydown', e => {
+  if (!visor.classList.contains('visible')) return;
+  if (e.key === 'Escape') cerrar();
+  if (e.key === 'ArrowLeft')  { actual = (actual - 1 + recuerdos.length) % recuerdos.length; mostrar(); }
+  if (e.key === 'ArrowRight') { actual = (actual + 1) % recuerdos.length; mostrar(); }
+});
+
+/* --- Música --- */
+const musica = document.getElementById('musica');
+musica.volume = 0.4;
+musica.play().catch(() => {
+  const desbloquear = () => {
+    musica.play();
+    document.removeEventListener('click', desbloquear);
+    document.removeEventListener('touchstart', desbloquear);
+  };
+  document.addEventListener('click', desbloquear);
+  document.addEventListener('touchstart', desbloquear);
+});
+</script>
+</body>
+</html>
